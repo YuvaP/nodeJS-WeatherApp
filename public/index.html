@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>Yuva Weather APP</title>
+        
+    </head>
+    <body>
+        <p><h2><i style="color: red;">Yuva Weather APP using nodeJS and Express. Async function is used to handle the Promises.</i></p> 
+        <p><h4><span style="color:red">Goal:</span> Enter any city name to get the weather condition.</p>
+        <p><span style="text-decoration:underline">How does the app work?</span></p>
+            
+            <ul><i>
+                <li>Client inputs the city name and sends it to the node server.</li>
+                <li>The server requests the external API (open weather API) using fetch().</li>
+                <li>The data is requested from API for the city entered.</li>
+                <li>The node server receives the weather info and sends response to the client.</li>
+                <li>The client receives the weather info and gets rendered in the webpage.</li>
+                <li>NOTE1: We need to signup to the openweathermap.org to get API key.</li>
+                <li>NOTE2: The API key is hidden from the code using .env file.</li>
+                <li>NOTE3: Check .env_sample file for API key instruction.</li>
+                <li>NOTE4: Install "Express". Use "node index.js" to run the server.</li>
+           </i></ul>
+
+        </h4></p><br>
+        <p><h3><span style="color:green">Please Enter the City Name in the Box below:</span></h3></p>
+        <input type="text" id="myText" value=""> 
+        <button onclick="myFunction()">Click Here</button><br>
+        <h3 style="color:blue">
+            The current weather condition of <span id="userSelection">this user selected city</span> is given below:
+        </h3>
+         <p>
+             Temperature: <span style="font-weight: bold; color:blue" id="tmp"></span><br>
+             Feels like: <span style="font-weight: bold; color:green" id="relativeTemp"></span><br>
+             Minimum Temp: <span style="font-weight: bold; color: purple;" id='tempMin'></span><br>
+             Maximum Temp: <span style="font-weight: bold; color: red;" id="tempMax"></span><br> 
+             Pressure: <span style="font-weight: bold; color:orange" id="Pressure"></span><br>
+             Humidity: <span style="font-weight: bold; color: black;" id="Humidity"></span> 
+        </p>
+        <script>
+    function myFunction(){
+            async function myWeatherApp(){
+                let citySelected=document.getElementById("myText").value;
+                document.getElementById("userSelection").innerHTML=citySelected;
+                console.log(citySelected);
+                const fetch_response= await fetch(`/weatherapi/${citySelected}`);
+                const json_data = await fetch_response.json();
+                //document.getElementById("weatherData").innerHTML=json_data;
+                console.log(json_data);
+                document.getElementById('tmp').textContent=json_data.temp;
+                document.getElementById('relativeTemp').textContent=json_data.feels_like;
+                document.getElementById('tempMin').textContent=json_data.temp_min;
+                document.getElementById('tempMax').textContent=json_data.temp_max;
+                document.getElementById('Pressure').textContent=json_data.pressure;
+                document.getElementById('Humidity').textContent=json_data.humidity;
+            }
+            myWeatherApp().catch(errors=>{
+               console.error(errors);
+            });
+        }
+        </script>
+
+    </body>
+</html>
